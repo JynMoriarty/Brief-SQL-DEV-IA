@@ -16,6 +16,7 @@ class tuned_provider(BaseProvider):
 
     def metier_rest(self):
         return random.choice(["Cuisinier","Serveur","Directeur","Manager"])
+    # voir a quoi doit ressembler le personnel du restaurant 
 
 
 f.add_provider(tuned_provider)
