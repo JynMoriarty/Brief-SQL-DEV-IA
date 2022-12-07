@@ -1,21 +1,16 @@
 Historiques :
 
 
-
 Personnel_id : de 0 a 1000 
-
 
 
 Dates: 
 
 
-
 Salaire: voir le salaire minimum et 4000 
 
 
-
 Nombre de place : ? 
-
 
 
 Metier :String         choisi entre Directeur,manageur,cuisinier,serveur , 
@@ -23,81 +18,61 @@ un seul directeur par code_postale
 2 ou 1 manager par code_postale
 
 
-
 Note: INT de 1 a 10  
-
 
 
 Experience:0 ou 1 (experimenter ou non )
 
 
-
 Adresse: String généré par data faker fr_FR
-
 
 
 Manager: indique le nom du manager , vide si manager ou directeur  
 
 
-
 Code_postale: Généré par code faker (String)
-
 
 
 Espace enfant : 0 ou 1  
 
 
-
 Accès mobilité reduite : 0 ou 1  
-
 
 
 parking: 0 ou 1  
 
 
-
 nombre de place : ? (entre 50 et 50+X)
-
 
 
 Borne service rapide : ? (BOOL donc 0 ou 1)
 
 
-
 Pays : FR ou autre données
-
 
 
 Departement: deux premiers chiffre du code postale (comment faire ? ) 
 
 
-
 Carte_id : de 0 a 1000
-
 
 
 Produit_id : De 0 a X 
 
 
-
 nom_produit : String (peut être faire une classe pour generer des noms produit potable)
-
 
 
 prix_produit : float , deux chiffre apres la virgule , entre 2.00 et 15.00
 
 
-
 Commande ID : entre 0 et X
-
 
 
 Date/heure : a voir comment faire  
 
 
-
 Produit_commander_id: entre 0 et X2
-
 
 
 Quantité_produit_commander: entre 1 et 3 (possibilité d'ajouter des poids)
