@@ -55,7 +55,6 @@ with engine.begin() as conn:
 
 with engine.begin() as conn :
     pa = conn.execute(select([pays.c.pays_nom])).fetchall()
-print(pa)
 
 for _ in range(26):                 #je boucle sur une range de 26 
     number = choice(range(20,30))   #je stock au préalable le nombre d'items ou de menus à ajouter à ma carte et le pays choisi
@@ -67,17 +66,27 @@ for _ in range(26):                 #je boucle sur une range de 26
             produit_id = choice(range(1,271)))
             conn.execute(insert_stmt)
         
-        
-# with engine.begin() as conn:
-#     for _ in range(100):
-#         insert_stmt= restaurant.insert().values(
-#         espace_enfant = faker.boolean(),
-#         acces_handicap = faker.boolean(),
-#         parking = faker.boolean(),
-#         nombre_place = randint(20,100),
-#         borne_service_rapide = faker.boolean()
-#     )
-#     conn.execute(insert_stmt)
+for value in pa:
+    random_pays = value[0]
+    with engine.begin() as conn:
+        for _ in range(10000):
+            number_list = [i for i in range(50000,99999)]
+            n = choice(number_list)
+            number_list.remove(n)
+            number = str(n)
+            dep = int(number[:2])
+            insert_stmt= restaurant.insert().values(
+            code_postal = n,
+            espace_enfant = randint(0,1),
+            parking = randint(0,1),
+            borne_service_rapide = randint(0,1),
+            acces_handicap = randint(0,1),
+            nombre_place = randint(20,100),
+            departement = dep,
+            pays_nom = random_pays,
+
+            )
+            conn.execute(insert_stmt)
 
 # with engine.begin() as conn:
 #     for _ in 100 :

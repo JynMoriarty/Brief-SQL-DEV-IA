@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData,Column,Integer,Numeric,String,Date,Table,ForeignKey,Boolean,create_engine
+from sqlalchemy import MetaData,Column,Integer,Numeric,String,Date,Table,ForeignKey,create_engine
 import sqlite3
 
 
@@ -11,11 +11,11 @@ metadata = MetaData()
 restaurant_table = Table(
     "restaurant",
     metadata,
-    Column("code_postal", Integer, primary_key=True),
-    Column("espace_enfant", Boolean, unique=False, default=True),
-    Column("parking", Boolean, unique=False, default=True),
-    Column("borne_service_rapide",Boolean, unique=False, default=True),
-    Column("acces_handicap",Boolean, unique=False, default=True),
+    Column("code_postal", Integer, primary_key=True,autoincrement = False),
+    Column("espace_enfant", Integer, unique=False, default=True),
+    Column("parking", Integer, unique=False, default=True),
+    Column("borne_service_rapide",Integer, unique=False, default=True),
+    Column("acces_handicap",Integer, unique=False, default=True),
     Column("nombre_place",Integer,nullable=False),
     Column("departement", Integer, nullable=False),
     Column("pays_nom",ForeignKey("pays.pays_nom"),nullable=False)
