@@ -6,6 +6,8 @@ engine = create_engine('sqlite:///restaurant.db', echo = True)
 
 metadata = MetaData()
 
+
+
 restaurant_table = Table(
     "restaurant",
     metadata,
@@ -14,8 +16,9 @@ restaurant_table = Table(
     Column("parking", Boolean, unique=False, default=True),
     Column("borne_service_rapide",Boolean, unique=False, default=True),
     Column("acces_handicap",Boolean, unique=False, default=True),
+    Column("nombre_place",Integer,nullable=False),
     Column("departement", Integer, nullable=False),
-    Column("Pays",ForeignKey("carte.pays"),nullable=False)
+    Column("pays_nom",ForeignKey("pays.pays_nom"),nullable=False)
 )
 personnel_table = Table(
     "personnel",
@@ -24,14 +27,22 @@ personnel_table = Table(
     Column("code_postal",ForeignKey("restaurant.code_postal"),nullable=False),
     Column("metier",String(35),nullable=False),
     Column("salaire",Numeric,nullable=False),
+    Column("nom",String(60),nullable= False),
+
     Column("note",Integer,nullable=False),
     Column("experience",Integer,nullable=False),
     Column("manager", Integer,nullable=False)
 )
+pays_table = Table(
+    "pays",
+    metadata,
+    Column("pays_id",Integer, primary_key=True),
+    Column("pays_nom",String(70),nullable= False)
+)
 carte_table = Table(
     "carte",
     metadata,
-    Column("pays",String(35), primary_key=True),
+    Column("pays_nom",ForeignKey("pays.pays_nom"),nullable= False),
     Column("produit_id", ForeignKey("produit.produit_id"), nullable=False)
 )
 produit_table = Table(    
@@ -46,7 +57,7 @@ commande_table = Table(
     metadata,    
     Column("commande_id", Integer, primary_key=True),
     Column("personne_id", ForeignKey("personnel.personne_id"), nullable=False),
-    Column("pays", ForeignKey("carte.pays"),nullable=False),    
+    Column("pays_nom", ForeignKey("pays.pays_nom"),nullable=False),    
     Column("date", Date,nullable=False),
     Column("code_postal", ForeignKey("restaurant.code_postal"),nullable=False)
 )
@@ -91,4 +102,5 @@ historique_table = Table(
 )
 # Start transaction to commit DDL to postgres database
 
-metadata.create_all(engine)    # Log the tables as they are created
+with engine.begin() as conn:
+    metadata.create_all(conn)
