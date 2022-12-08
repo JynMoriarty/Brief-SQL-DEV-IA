@@ -31,13 +31,13 @@ personnel_table = Table(
     Column("personne_id",Integer,primary_key=True),
     Column("code_postal",ForeignKey("code_postal.code_postal"),nullable=False),
     Column("restaurant_id",ForeignKey("restaurant.restaurant_id"),nullable=False),
-    Column("metier",String(35),nullable=False),
+    Column("metier",String(60),nullable=False),
     Column("salaire",Numeric,nullable=False),
     Column("nom",String(60),nullable= False),
-
+    Column("adresse",String,nullable=False),
     Column("note",Integer,nullable=False),
     Column("experience",Integer,nullable=False),
-    Column("manager", Integer,nullable=False)
+    Column("manager", String(60))
 )
 pays_table = Table(
     "pays",

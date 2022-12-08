@@ -1,10 +1,21 @@
 from sqlalchemy import MetaData,create_engine,select
 from faker import Faker
 from faker_food import FoodProvider
-import sys
-import datetime
 from random import randint,uniform,choice
-from ast import literal_eval
+from random import randrange
+from datetime import timedelta
+from datetime import datetime
+
+
+def random_date(start, end):
+    delta = end - start
+    int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
+    random_second = randrange(int_delta)
+    return start + timedelta(seconds=random_second)
+
+d1 = datetime.strptime('1/1/2022 1:30 ', '%m/%d/%Y %I:%M ')
+d2 = datetime.strptime('1/1/2023 4:50 ', '%m/%d/%Y %I:%M ')
+
 
 engine = create_engine('sqlite:///restaurant.db')
 
@@ -33,6 +44,10 @@ my_file = open("produit.txt", "r")
 content = my_file.read()
 produit_list = content.split(",")
 my_file.close()
+
+
+
+
 
 with engine.begin() as conn:
     for object in produit_list:
@@ -90,12 +105,12 @@ for _ in range(26):                 #je boucle sur une range de 26
             pays_nom = random_pays,
             produit_id = choice(range(1,271)))
             conn.execute(insert_stmt)
-        
+
 for value in pa:
     random_pays = value[0]
     number_list = [i for i in range(50000,99999)]
     with engine.begin() as conn:
-        for _ in range(10000):
+        for _ in range(1000):
            
             n = choice(number_list)
             number_list.remove(n)
@@ -114,22 +129,76 @@ for value in pa:
             )
             conn.execute(insert_stmt)
 
+
+
+
+with engine.begin() as conn :
+    restoto = conn.execute(select([restaurant.c.restaurant_id,restaurant.c.code_postal])).fetchall()
+
+
+with engine.begin() as conn:
+    metier_list = ["cuisinier","caissier"]
+    for i in range(len(restoto)):
+
+        name = faker.name()
+        insert_stmt = personnel.insert().values(
+        metier = "directeur",
+        note = 0,
+        nom = faker.name(),
+        adresse = faker.address(),
+        experience = (randint(1,50)),
+        manager = 'null',
+        salaire = 10000,
+        restaurant_id = restoto[i][0],
+        code_postal = restoto[i][1]
+        )
+        conn.execute(insert_stmt)
+        insert_stmt = personnel.insert().values(
+        metier = "manager",
+        note = 0,
+        nom = name,
+        adresse = faker.address(),
+        experience = (randint(1,50)),
+        manager = 'null',
+        salaire = 3000,
+        restaurant_id = restoto[i][0],
+        code_postal = restoto[i][1]
+        )
+        conn.execute(insert_stmt)
+
+        for _ in range(10):
+            insert_stmt = personnel.insert().values(
+            metier = choice(metier_list),
+            note = randint(1,10),
+            nom = faker.name(),
+            adresse = faker.address(),
+            experience = (randint(1,50)),
+            manager = name,
+            salaire = 1000,
+            restaurant_id = restoto[i][0],
+            code_postal = restoto[i][1]
+            )
+            conn.execute(insert_stmt)
+
+
+# with engine.begin() as conn :
+#     resto = conn.execute(select([restaurant.c.restaurant_id,restaurant.c.pays_nom,restaurant.c.code_postal,personnel.c.personne_id])).fetchall()  
+
+
 # with engine.begin() as conn:
-#     for _ in 100 :
-
-#         insert_stmt= restaurant.insert().values(
-#         metier = "directeur",
-#         salaire= 10000,
-#         note = 0,
-#         experience = 0,
-#         adresse = faker.adress.streetAdress(),
-#         manager = faker.name()
-        
-#     )
-#     conn.execute(insert_stmt)
+#     for _ in range(1000):
+#         rd = randint(1,10000)
+#         insert_stmt = commande.insert().values(
+#             personne_id = resto[rd][3],
+#             date = random_date(d1,d2),
+#             pays_nom = resto[rd][1],
+#             code_postal = resto[rd][2],
+#             restaurant_id = resto[rd][0]
+#         )
+#         conn.execute(insert_stmt)
 
 
-
+    
 
 
 
