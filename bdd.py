@@ -6,12 +6,17 @@ engine = create_engine('sqlite:///restaurant.db', echo = True)
 
 metadata = MetaData()
 
-
+code_postal = Table(
+    "code_postal",
+    metadata,
+    Column("code_postal",Integer, primary_key=True,autoincrement = False)
+)
 
 restaurant_table = Table(
     "restaurant",
     metadata,
-    Column("code_postal", Integer, primary_key=True,autoincrement = False),
+    Column("restaurant_id",Integer,primary_key=True),
+    Column("code_postal", Integer, ForeignKey("code_postal.code_postal")),
     Column("espace_enfant", Integer, unique=False, default=True),
     Column("parking", Integer, unique=False, default=True),
     Column("borne_service_rapide",Integer, unique=False, default=True),
@@ -24,7 +29,8 @@ personnel_table = Table(
     "personnel",
     metadata,
     Column("personne_id",Integer,primary_key=True),
-    Column("code_postal",ForeignKey("restaurant.code_postal"),nullable=False),
+    Column("code_postal",ForeignKey("code_postal.code_postal"),nullable=False),
+    Column("restaurant_id",ForeignKey("restaurant.restaurant_id"),nullable=False),
     Column("metier",String(35),nullable=False),
     Column("salaire",Numeric,nullable=False),
     Column("nom",String(60),nullable= False),
@@ -57,9 +63,10 @@ commande_table = Table(
     metadata,    
     Column("commande_id", Integer, primary_key=True),
     Column("personne_id", ForeignKey("personnel.personne_id"), nullable=False),
+    Column("restaurant_id",ForeignKey("restaurant.restaurant_id"),nullable=False),
     Column("pays_nom", ForeignKey("pays.pays_nom"),nullable=False),    
     Column("date", Date,nullable=False),
-    Column("code_postal", ForeignKey("restaurant.code_postal"),nullable=False)
+    Column("code_postal", ForeignKey("code_postal.code_postal"),nullable=False)
 )
 pc_table = Table(
     "pc",
@@ -88,7 +95,7 @@ recette_table = Table(
 stock_table = Table(
     "stock",
     metadata,
-    Column("code_postal",ForeignKey("restaurant.code_postal"),nullable=False),
+    Column("restaurant_id",ForeignKey("restaurant.restaurant_id"),nullable=False),
     Column("ingredient_id",ForeignKey("ingredient.ingredient_id"),nullable=False),
     Column("stock",Numeric,nullable=False)
 )

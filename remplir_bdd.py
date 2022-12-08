@@ -27,6 +27,7 @@ personnel = metadata.tables["personnel"]
 stock = metadata.tables["stock"]
 historique =metadata.tables["historique"]
 pays = metadata.tables["pays"]
+code_postal = metadata.tables["code_postal"]
 
 my_file = open("produit.txt", "r")
 content = my_file.read()
@@ -35,10 +36,15 @@ my_file.close()
 
 with engine.begin() as conn:
     for object in produit_list:
+        
         insert_stmt= produit.insert().values(
         produit_nom = object,
         prix = round(uniform(1.00,12.00),2))
         conn.execute(insert_stmt)
+
+
+
+
 with engine.begin() as conn:
    for _ in range(40):
         insert_stmt= ingredient.insert().values(
@@ -56,11 +62,30 @@ with engine.begin() as conn:
 with engine.begin() as conn :
     pa = conn.execute(select([pays.c.pays_nom])).fetchall()
 
+
+number_list1 = [i for i in range(50000,99999)]
+
+           
+with engine.begin() as conn:
+    for _ in range(49999):
+        n = choice(number_list1)
+        number_list1.remove(n)
+        insert_stmt = code_postal.insert().values(
+            code_postal = n
+        )
+        conn.execute(insert_stmt)
+
+
+
 for _ in range(26):                 #je boucle sur une range de 26 
     number = choice(range(20,30))   #je stock au préalable le nombre d'items ou de menus à ajouter à ma carte et le pays choisi
     random_pays = choice(pa)[0]
+    number_produit = [i for i in range(270)]
+
     with engine.begin() as conn:
         for _ in range(number):
+            n = choice(number_produit)
+            number_produit.remove(n)
             insert_stmt= carte.insert().values(  #pour un pays je choisis les produits de la carte 
             pays_nom = random_pays,
             produit_id = choice(range(1,271)))
@@ -68,9 +93,10 @@ for _ in range(26):                 #je boucle sur une range de 26
         
 for value in pa:
     random_pays = value[0]
+    number_list = [i for i in range(50000,99999)]
     with engine.begin() as conn:
         for _ in range(10000):
-            number_list = [i for i in range(50000,99999)]
+           
             n = choice(number_list)
             number_list.remove(n)
             number = str(n)
