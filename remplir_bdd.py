@@ -5,6 +5,7 @@ from random import randint,uniform,choice
 from random import randrange
 from datetime import timedelta
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 def random_date(start, end):
@@ -110,7 +111,7 @@ for value in pa:
     random_pays = value[0]
     number_list = [i for i in range(50000,99999)]
     with engine.begin() as conn:
-        for _ in range(1000):
+        for _ in range(10):
            
             n = choice(number_list)
             number_list.remove(n)
@@ -179,6 +180,25 @@ with engine.begin() as conn:
             code_postal = restoto[i][1]
             )
             conn.execute(insert_stmt)
+
+current_date = datetime.today()
+with engine.begin() as conn :
+    restototo = conn.execute(select([personnel.c.salaire,personnel.c.personne_id])).fetchall()
+    exp  = conn.execute(select([personnel.c.experience])).fetchall()
+
+with engine.begin() as conn:
+    for i in range(len(exp)):
+        n=exp[i][0]
+        for j in range (n):
+            insert_stmt = historique.insert().values(
+            personne_id = restototo[i][1],
+            Salaire = round(uniform(1400,1900),2),
+            date = current_date - relativedelta(months=j),
+            )
+            conn.execute(insert_stmt)
+                
+
+
 
 
 # with engine.begin() as conn :

@@ -32,7 +32,7 @@ personnel_table = Table(
     Column("code_postal",ForeignKey("code_postal.code_postal"),nullable=False),
     Column("restaurant_id",ForeignKey("restaurant.restaurant_id"),nullable=False),
     Column("metier",String(60),nullable=False),
-    Column("salaire",Numeric,nullable=False),
+    Column("salaire",Integer,nullable=False),
     Column("nom",String(60),nullable= False),
     Column("adresse",String,nullable=False),
     Column("note",Integer,nullable=False),
@@ -105,7 +105,7 @@ historique_table = Table(
     metadata,
     Column("personne_id",ForeignKey("personnel.personne_id"),nullable=False),
     Column("date",Date,nullable=False),
-    Column("Salaire",Numeric,nullable=False)
+    Column("Salaire",Integer,nullable=False)
 )
 # Start transaction to commit DDL to postgres database
 
