@@ -6,6 +6,10 @@ engine = create_engine('sqlite:///restaurant.db', echo = True)
 
 metadata = MetaData()
 
+
+
+#Création basiques des tables avec leurs clés primaire et leurs clés étrangères metadata stock notre base de donnée
+
 code_postal = Table(
     "code_postal",
     metadata,
