@@ -203,23 +203,47 @@ with engine.begin() as conn:
 
 
 
-# with engine.begin() as conn :
-#     resto = conn.execute(select([restaurant.c.restaurant_id,restaurant.c.pays_nom,restaurant.c.code_postal,personnel.c.personne_id])).fetchall()  
+
+with engine.begin() as conn :
+    resto = conn.execute("""SELECT restaurant.restaurant_id,restaurant.pays_nom,restaurant.code_postal,personnel.personne_id 
+                            FROM restaurant
+                            JOIN personnel ON personnel.code_postal = restaurant.code_postal
+    """).fetchall()
 
 
-# with engine.begin() as conn:
+with engine.begin() as conn:
 
-#     for _ in range(1000):
-#         rd = randint(1,10000)
-#         insert_stmt = commande.insert().values(
-#             personne_id = resto[rd][3],
-#             date = random_date(d1,d2),
-#             pays_nom = resto[rd][1],
-#             code_postal = resto[rd][2],
-#             restaurant_id = resto[rd][0]
-#         )
-#         conn.execute(insert_stmt)
+    for _ in range(1000):
+        rd = randint(1,260)
+        insert_stmt = commande.insert().values(
+            personne_id = resto[rd][3],
+            date = random_date(d1,d2),
+            pays_nom = resto[rd][1],
+            code_postal = resto[rd][2],
+            restaurant_id = resto[rd][0]
+        )
+        conn.execute(insert_stmt)
 
+with engine.begin() as conn:
+    comm = conn.execute("""SELECT commande_id FROM commande""").fetchall()
+
+
+
+
+
+with engine.begin() as conn : 
+    for c in range(len(comm)):
+        p_list = [i for i in len(produit_list)]
+        number = (randint(2,5))
+        for _ in range(number):
+            p = choice(p_list)
+            p_list.remove(p)
+            insert_stmt = pc.insert().values(
+            commande_id = c,
+            produit_id = p,
+            quantite = randint(1,3)
+            )
+            conn.execute(insert_stmt)
 
     
 
