@@ -6,6 +6,7 @@ from random import randrange
 from datetime import timedelta
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from random import sample 
 
 
 def random_date(start, end):   #fonction qui génére une date aléatoire entre deux dates données
@@ -210,9 +211,9 @@ with engine.begin() as conn:
 # with engine.begin() as conn:
 
 #     for _ in range(1000):
-#         rd = randint(1,10000)
+#         rd = randint(0,3120)
 #         insert_stmt = commande.insert().values(
-#             personne_id = resto[rd][3],
+#             personne_id = resto[rd][3], 
 #             date = random_date(d1,d2),
 #             pays_nom = resto[rd][1],
 #             code_postal = resto[rd][2],
@@ -221,7 +222,41 @@ with engine.begin() as conn:
 #         conn.execute(insert_stmt)
 
 
-    
+# Recette : 
+    # recette id 
+    # produit id 
+    # ingredient id 
+    # quantité 
+    # trouver un produit id qui existe lié à la carte 
+    # donc on boucle sur les pays on lie avec la carte 
+    # random.sample(set(liste_ingredients)
+    # creer liste ingrédients 
+    # random.sample(set(liste_ingredients)
+with engine.begin() as conn :
+    liste_ingredient = conn.execute(select([ingredient.c.ingredient_nom])).fetchall()
+with engine.begin() as conn : 
+    cursor = conn.execute(select([ingredient.c.ingredient_id,ingredient.c.ingredient_nom])).fetchall()
+for i  in range(271) :
+    with engine.begin() as conn:
+        produit_id = i 
+        n= sample(set(liste_ingredient),randint(3,6))
+        for j in n:
+            ingredient = j[0],
+            quantité = randint(1,3)
+            insert_stmt = recette.insert().values(
+            ingredient_id = cursor[liste_ingredient.index(j)][0],
+            quantité = randint(1,3),
+            produit_id = i,
+            )
+            conn.execute(insert_stmt)
+
+
+
+        
+
+
+
+        
 
 
 

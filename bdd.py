@@ -90,9 +90,8 @@ ingredient_table = Table(
 recette_table = Table(
     "recette",
     metadata,
-    Column("recette_id",Integer,primary_key= True),
-    Column("produit_id",ForeignKey("produit.produit_id"),nullable=False),
-    Column("ingredient_id",ForeignKey("ingredient.ingredient_id"),nullable=False),
+    Column("produit_id",ForeignKey("produit.produit_id"),nullable=True),
+    Column("ingredient_id",ForeignKey("ingredient.ingredient_id"),nullable=True),
     Column("quantité",Numeric,nullable=False)
 )
 
