@@ -208,6 +208,7 @@ with engine.begin() as conn:
 
 
 # with engine.begin() as conn:
+
 #     for _ in range(1000):
 #         rd = randint(1,10000)
 #         insert_stmt = commande.insert().values(
